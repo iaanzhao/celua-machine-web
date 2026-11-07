@@ -6,6 +6,23 @@
   const restart = document.getElementById('restart');
   const fullscreen = document.getElementById('fullscreen');
 
+  const diagnostic = document.createElement('pre');
+  diagnostic.id = 'runtime-diagnostic';
+  diagnostic.hidden = true;
+  document.body.appendChild(diagnostic);
+  const nativeAlert = window.alert.bind(window);
+  window.alert = function (message) {
+    diagnostic.textContent = 'PLAYER STARTUP ERROR\n\n' + String(message) + '\n\nBrowser: ' + navigator.userAgent + '\nCross origin isolated: ' + String(window.crossOriginIsolated) + '\nSharedArrayBuffer: ' + typeof SharedArrayBuffer;
+    diagnostic.hidden = false;
+    statusText.textContent = 'STARTUP ERROR';
+  };
+  const oldError = window.onerror;
+  window.onerror = function (message, source, line, column, error) {
+    diagnostic.textContent = 'BROWSER ERROR\n\n' + String(message) + '\n' + String(source) + ':' + line + ':' + column + (error && error.stack ? '\n\n' + error.stack : '');
+    diagnostic.hidden = false;
+    return oldError ? oldError.apply(this, arguments) : false;
+  };
+
   function syncStatus() {
     const state = spinner.className;
     if (state.includes('error')) {
