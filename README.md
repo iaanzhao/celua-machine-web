@@ -8,6 +8,6 @@ The Pages workflow publishes `dist/` from the `main` branch. GitHub Pages does n
 
 ## Source and licenses
 
-The game source and assets are included in `dist/celua-machine-v2.0.2-web.love` and are licensed under GPL-3.0; see `dist/CELUA-GPL-3.0.txt`. The browser runtime and service worker notices are in `dist/LOVEJS-NOTICES.txt` and `dist/COI-SERVICEWORKER-MIT.txt`.
+The game source and assets are included in `dist/celua-machine-v2.0.2-web2.love` and are licensed under GPL-3.0; see `dist/CELUA-GPL-3.0.txt`. The browser runtime and service worker notices are in `dist/LOVEJS-NOTICES.txt` and `dist/COI-SERVICEWORKER-MIT.txt`.
 
 Upstream game: [KyYay/CelLua-Machine](https://github.com/KyYay/CelLua-Machine).

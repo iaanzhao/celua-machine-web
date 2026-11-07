@@ -23,7 +23,7 @@
 
   restart.addEventListener('click', function () {
     statusText.textContent = 'RESTARTING';
-    if (window.Player) window.Player.start('celua-machine-v2.0.2-web.love');
+    if (window.Player) window.Player.start('celua-machine-v2.0.2-web2.love');
     else window.location.reload();
   });
 
