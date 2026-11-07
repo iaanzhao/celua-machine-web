@@ -10,17 +10,29 @@
   diagnostic.id = 'runtime-diagnostic';
   diagnostic.hidden = true;
   document.body.appendChild(diagnostic);
-  const nativeAlert = window.alert.bind(window);
+  const runtimeLogs = [];
+  const pushLog = function (kind, value) {
+    const detail = value && value.stack ? value.stack : String(value);
+    runtimeLogs.push(kind + ': ' + detail);
+    if (runtimeLogs.length > 14) runtimeLogs.shift();
+    if (!diagnostic.hidden) diagnostic.textContent += '\n\n' + kind + ': ' + detail;
+  };
+  const probe = document.createElement('canvas');
+  let webgl = 'unavailable';
+  try { webgl = probe.getContext('webgl2') ? 'WebGL 2 available' : (probe.getContext('webgl') ? 'WebGL 1 only' : 'no WebGL context'); } catch (e) { webgl = 'WebGL probe failed: ' + e; }
+  const environment = '\n\nBrowser: ' + navigator.userAgent + '\nCross origin isolated: ' + String(window.crossOriginIsolated) + '\nSharedArrayBuffer: ' + typeof SharedArrayBuffer + '\nWebAssembly: ' + typeof WebAssembly + '\nGraphics: ' + webgl;
+  const priorConsoleError = console.error.bind(console);
+  console.error = function () { pushLog('console.error', Array.from(arguments).join(' ')); priorConsoleError.apply(console, arguments); };
+  window.addEventListener('error', function (event) { pushLog('window error', event.error || event.message); });
+  window.addEventListener('unhandledrejection', function (event) { pushLog('unhandled rejection', event.reason); });
   window.alert = function (message) {
-    diagnostic.textContent = 'PLAYER STARTUP ERROR\n\n' + String(message) + '\n\nBrowser: ' + navigator.userAgent + '\nCross origin isolated: ' + String(window.crossOriginIsolated) + '\nSharedArrayBuffer: ' + typeof SharedArrayBuffer;
+    diagnostic.textContent = 'PLAYER STARTUP ERROR\n\n' + String(message) + environment + (runtimeLogs.length ? '\n\nRUNTIME LOG\n' + runtimeLogs.join('\n') : '\n\nNo console errors captured.');
     diagnostic.hidden = false;
     statusText.textContent = 'STARTUP ERROR';
   };
-  const oldError = window.onerror;
   window.onerror = function (message, source, line, column, error) {
-    diagnostic.textContent = 'BROWSER ERROR\n\n' + String(message) + '\n' + String(source) + ':' + line + ':' + column + (error && error.stack ? '\n\n' + error.stack : '');
-    diagnostic.hidden = false;
-    return oldError ? oldError.apply(this, arguments) : false;
+    pushLog('browser error', error || (String(message) + ' at ' + source + ':' + line + ':' + column));
+    return true;
   };
 
   function syncStatus() {
