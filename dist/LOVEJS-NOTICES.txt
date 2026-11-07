@@ -1,0 +1,12 @@
+CelLua Machine web player runtime notices
+
+CelLua Machine
+Fan made game by KyYay. This release is distributed under GNU General Public License version 3.0. The .love download contains the game source and assets. See CELUA-GPL-3.0.txt and the upstream project at https://github.com/KyYay/CelLua-Machine.
+
+love.js
+Copyright 2022 2dengine LLC. MIT License. Source: https://github.com/2dengine/love.js
+
+LÖVE 11.5
+Copyright LÖVE Development Team. zlib/libpng License. See 11.5/license.txt and https://love2d.org/.
+
+The love.js player is based on the Emscripten ports by David Khachaturov and Tanner Rogalsky. Their notices are included in the love.js runtime license files.
