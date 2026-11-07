@@ -10,3 +10,6 @@ LÖVE 11.5
 Copyright LÖVE Development Team. zlib/libpng License. See 11.5/license.txt and https://love2d.org/.
 
 The love.js player is based on the Emscripten ports by David Khachaturov and Tanner Rogalsky. Their notices are included in the love.js runtime license files.
+
+Web port patch
+The v2.0.2 package adapts Lua control flow for the browser player; see WEB-PORT-PATCH.txt.

@@ -1,0 +1,7 @@
+CelLua Machine v2.0.2 web compatibility patch
+
+The original game source uses Lua goto statements and labels in main.lua. Those constructs are not accepted by the Lua 5.1 runtime used by LÖVE 11.5 in the love.js web player.
+
+This package replaces those jumps with equivalent conditional and loop flow in NextCell and the push loop. Game assets, cell definitions, and level content are unchanged. The modified main.lua is included in the downloadable .love package.
+
+Upstream game: https://github.com/KyYay/CelLua-Machine

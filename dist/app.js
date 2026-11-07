@@ -14,7 +14,7 @@
     } else if (state.includes('loading') || state.includes('pending')) {
       statusText.textContent = 'LOADING';
     } else {
-      statusText.textContent = 'RUNNING';
+      statusText.textContent = 'ENGINE READY';
     }
   }
 
