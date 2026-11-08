@@ -21,8 +21,14 @@
   let webgl = 'unavailable';
   try { webgl = probe.getContext('webgl2') ? 'WebGL 2 available' : (probe.getContext('webgl') ? 'WebGL 1 only' : 'no WebGL context'); } catch (e) { webgl = 'WebGL probe failed: ' + e; }
   const environment = '\n\nBrowser: ' + navigator.userAgent + '\nCross origin isolated: ' + String(window.crossOriginIsolated) + '\nSharedArrayBuffer: ' + typeof SharedArrayBuffer + '\nWebAssembly: ' + typeof WebAssembly + '\nGraphics: ' + webgl;
-  const priorConsoleError = console.error.bind(console);
-  console.error = function () { pushLog('console.error', Array.from(arguments).join(' ')); priorConsoleError.apply(console, arguments); };
+  for (const level of ['log', 'warn', 'error']) {
+    const original = console[level].bind(console);
+    console[level] = function () {
+      const message = Array.from(arguments).map(value => value && value.stack ? value.stack : String(value)).join(' ');
+      pushLog('console.' + level, message);
+      original.apply(console, arguments);
+    };
+  }
   window.addEventListener('error', function (event) { pushLog('window error', event.error || event.message); });
   window.addEventListener('unhandledrejection', function (event) { pushLog('unhandled rejection', event.reason); });
   window.alert = function (message) {
