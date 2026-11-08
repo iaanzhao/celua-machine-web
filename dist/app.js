@@ -58,7 +58,9 @@
 
   restart.addEventListener('click', function () {
     statusText.textContent = 'RESTARTING';
-    window.location.reload();
+    const restartUrl = new URL(window.location.href);
+    restartUrl.searchParams.set('restart', String(Date.now()));
+    window.location.replace(restartUrl.href);
   });
 
   fullscreen.addEventListener('click', function () {
